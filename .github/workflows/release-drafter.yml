@@ -1,0 +1,21 @@
+name: Release Drafter
+
+# Current default permissions can be viewed here: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+permissions: write-all
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_release_draft:
+    runs-on: ubuntu-latest
+    steps:
+      # Drafts your next Release notes as Pull Requests are merged into "main"
+      - name: Create/Update Draft Release
+        uses: release-drafter/release-drafter@v5.13.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Semantic versioning settings
+          config-name: release-drafter-config.yml
