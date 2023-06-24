@@ -12,23 +12,23 @@ Add this snippet to your `.zshrc` file:
 
 ```zsh
 # Check for the opera-gx-profiles plugin and install if it doesn't exist
-if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/operagxprofiles" ]; then
-    git clone --depth=1 https://github.com/troykelly/oh-my-zsh-opera-gx ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/operagxprofiles
+if [ ! -d "${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/operagxprofiles" ]; then
+    git clone --depth=1 https://github.com/troykelly/oh-my-zsh-opera-gx ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/operagxprofiles
 fi
 ```
 
 Then, source your `.zshrc`:
 
 ```zsh
-source ~/.zshrc
+source ${HOME}/.zshrc
 ```
 
 ### 2. Manual installation:
 
-First, clone this repository into `$ZSH_CUSTOM/plugins` (by default this is `~/.oh-my-zsh/custom/plugins`):
+First, clone this repository into `$ZSH_CUSTOM/plugins` (by default this is `${HOME}/.oh-my-zsh/custom/plugins`):
 
 ```zsh
-git clone --depth=1 https://github.com/troykelly/oh-my-zsh-opera-gx ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/operagxprofiles
+git clone --depth=1 https://github.com/troykelly/oh-my-zsh-opera-gx ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/operagxprofiles
 ```
 
 ### 3. Enable plugin:
@@ -42,7 +42,7 @@ plugins=(… operagxprofiles)
 Finally, source your `.zshrc` to apply the changes:
 
 ```zsh
-source ~/.zshrc
+source ${HOME}/.zshrc
 ```
 
 ## Usage
@@ -57,24 +57,41 @@ As soon as you start typing the `opgx` command and then press the space and Tab 
 
 ## Updating
 
-To manually update the plugin, go to its directory (`~/.oh-my-zsh/custom/plugins/operagxprofiles` by default), and run `git pull`.
+To manually update the plugin, go to its directory (`${HOME}/.oh-my-zsh/custom/plugins/operagxprofiles` by default), and run `git pull`.
 
 To set up automatic updates whenever you start a new shell session, add these lines to your `.zshrc`:
 
 ```zsh
-# Update custom plugins
-custom_plugins_path="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins"
-cd "$custom_plugins_path"
+update_custom_plugins() {
+  # Check the zstyle value for auto-update
+  local mode
+  zstyle -g mode ':omz:update' mode 
 
-for plugin in $(ls "$custom_plugins_path"); do
+  # If the mode is not 'auto', exit
+  if [[ "$mode" != 'auto' ]]; then
+    return
+  fi
+
+  local plugins_path="${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins"
+  local plugin
+  
+  for plugin in "$plugins_path"/*; do
     if [ -d "$plugin/.git" ]; then
-        echo "Updating $plugin"
-        cd "$plugin" && git pull
-        cd "$custom_plugins_path"
+      # Quietly attempt to update the plugin
+      local git_output
+      git_output=$(git -C "$plugin" pull 2>/dev/null)
+      
+      # If the output does not include the "Already up to date." string,
+      # then an update was performed.
+      if [[ "$git_output" != *"Already up to date."* ]]; then
+        echo "Updated ${plugin##*/}!"
+      fi
     fi
-done
+  done
+}
 
-cd - > /dev/null
+# Run the updates
+update_custom_plugins
 ```
 
 After saving these changes to `.zshrc`, the plugin will automatically make sure it's updated to the latest version whenever you open a new shell session.
