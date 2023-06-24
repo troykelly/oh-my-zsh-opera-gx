@@ -1,65 +1,67 @@
-# Oh My Zsh Plugin: Opera GX Profiles
+# Oh My Zsh Plugin - Opera GX Profiles
 
 This plugin for Oh My Zsh makes it easier to manage your Opera GX profiles. With this plugin, you can start Opera GX with a specific user profile by using the `opgx` command followed by the profile's name. The plugin also implements autocompletion for the profile names so you won't have to type the entire profile name manually.
 
 ## Installation
 
-1. Automatic installation:
+There are two ways to install this plugin:
 
-   Add this snippet to your `.zshrc` file:
+### 1. Automatic installation:
 
-   ```bash
-   # check for opera-gx-profiles plugin and install if needed
-   if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/operagxprofiles" ]; then
-      git clone https://github.com/troykelly/oh-my-zsh-opera-gx ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/operagxprofiles
-   fi
-   ```
+Add this snippet to your `.zshrc` file:
 
-   Then source your `.zshrc`:
+```zsh
+# Check for the opera-gx-profiles plugin and install if it doesn't exist
+if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/operagxprofiles" ]; then
+    git clone --depth=1 https://github.com/troykelly/oh-my-zsh-opera-gx ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/operagxprofiles
+fi
+```
 
-   ```bash
-   source ~/.zshrc
-   ```
+Then, source your `.zshrc`:
 
-2. Manual installation:
+```zsh
+source ~/.zshrc
+```
 
-   Clone this repository into `$ZSH_CUSTOM/plugins` (by default this is `~/.oh-my-zsh/custom/plugins`)
+### 2. Manual installation:
 
-   ```bash
-   git clone https://github.com/troykelly/oh-my-zsh-opera-gx ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/operagxprofiles
-   ```
+First, clone this repository into `$ZSH_CUSTOM/plugins` (by default this is `~/.oh-my-zsh/custom/plugins`):
 
-3. Enable plugin:
+```zsh
+git clone --depth=1 https://github.com/troykelly/oh-my-zsh-opera-gx ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/operagxprofiles
+```
 
-   Now add the `operagxprofiles` plugin to your plugin list - edit your `.zshrc` file and change `plugins=(...)` to include `operagxprofiles`. The result might look like this:
+### 3. Enable plugin:
 
-   ```bash
-   plugins=(git operagxprofiles)
-   ```
+Next, add the `operagxprofiles` plugin to your `.zshrc` file plugins list. Here's an example:
 
-   Source `.zshrc` to take the changes into account:
+```zsh
+plugins=(… operagxprofiles)
+```
 
-   ```bash
-   source ~/.zshrc
-   ```
+Finally, source your `.zshrc` to apply the changes:
+
+```zsh
+source ~/.zshrc
+```
 
 ## Usage
 
-- To start Opera GX with a specific profile, simply type `opgx` followed by the profile's name:
+To start Opera GX with a specific profile, simply type `opgx` followed by the profile's name:
 
-  ```bash
-  opgx profile-name
-  ```
+```zsh
+opgx profile-name
+```
 
-- As soon as you start typing the `opgx` command and then press the space and Tab keys, Oh My Zsh will suggest available profile names. Continue typing the intended profile name, and the shell will continue to suggest matching profiles.
+As soon as you start typing the `opgx` command and then press the space and Tab keys, Oh My Zsh will suggest available profile names. Continue typing the intended profile name, and the shell will continue to suggest matching profiles.
 
 ## Updating
 
-For manual updates, navigate to the `operagxprofiles` plugin's directory (by default this is `~/.oh-my-zsh/custom/plugins/operagxprofiles`), and perform a `git pull` to fetch the latest updates.
+To manually update the plugin, go to its directory (`~/.oh-my-zsh/custom/plugins/operagxprofiles` by default), and run `git pull`.
 
-For automatic updates each time a new shell session starts, add these lines to your `~/.zshrc` file:
+To set up automatic updates whenever you start a new shell session, add these lines to your `.zshrc`:
 
-```bash
+```zsh
 # Update custom plugins
 custom_plugins_path="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins"
 cd "$custom_plugins_path"
@@ -74,3 +76,5 @@ done
 
 cd - > /dev/null
 ```
+
+After saving these changes to `.zshrc`, the plugin will automatically make sure it's updated to the latest version whenever you open a new shell session.
